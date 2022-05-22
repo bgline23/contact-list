@@ -1,0 +1,9 @@
+.text-input {
+  font-weight: 600;
+  color: darkslateblue;
+  padding: 8px;
+
+  border-radius: 6px;
+  border: 2px solid #777;
+}
+
