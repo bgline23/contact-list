@@ -17,11 +17,21 @@ const onformSubmit = async () => {
       email: form.value.email.value,
       password: form.value.password.value,
     });
+
+    if(response.status == 200){
+      snackbarColor.value = "success";
+      snackbar.value = true;
+      message.value = "Account created successfully";
+    }
   } catch (error) {
     if (error.response && error.response.data) {
       snackbarColor.value = "warning";
       snackbar.value = true;
       message.value = error.response.data;
+    } else {
+      snackbarColor.value = "error";
+      snackbar.value = true;
+      message.value = error.message;
     }
   }
 };
