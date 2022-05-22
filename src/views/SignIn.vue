@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const form = ref(null);
 const isValidated = ref(false);
@@ -11,28 +12,48 @@ const usernameRules = [
 const passwordRules = [p => p !== "" || "Required"];
 const username = ref("");
 const password = ref("");
+const color = ref("");
 
 const snackbar = ref(false);
 const message = ref("");
 const router = useRouter();
 
-const onSignInClick = () => {
-  form.value.validate();
+const onSignInClick = async () => {
+  try {
+    form.value.validate();
 
-  if (!isValidated.value) return;
+    if (!isValidated.value) return;
 
-  if (username.value == "zzz") {
-    snackbar.value = true;
-    message.value = "Please enter a name";
-  } else {
-    router.push("/contacts");
+    const response = await axios.post("http://localhost:8081/authenticate/login", {
+      username: username.value,
+      password: password.value,
+    });
+
+    if (response.data.success) {
+      router.push("/contacts");
+    }
+    return;
+  } catch (error) {
+    console.log(error);
+    if (error.response && error.response.status == 401) {
+      color.value = "warning";
+      snackbar.value = true;
+      message.value = error.response?.data || "Incorrect username or password.";
+    } else {
+      color.value = "error";
+      snackbar.value = true;
+      message.value = error.message;
+    }
   }
 };
 </script>
 
 <template>
   <div class="page">
-    <v-form ref="form" class="form" lazy-validation>
+    <v-snackbar v-model="snackbar" :color="color">
+      {{ message }}
+    </v-snackbar>
+    <v-form ref="form" class="form" v-model="isValidated">
       <h2 class="form-title d-flex justify-center">Sign In</h2>
       <v-text-field
         v-model="username"
@@ -51,7 +72,7 @@ const onSignInClick = () => {
         required
         :rules="passwordRules"
       ></v-text-field>
-      <v-btn @click="onSignInClick">Sign In</v-btn>
+      <v-btn @click="onSignInClick" color="purple">Sign In</v-btn>
     </v-form>
   </div>
 </template>
@@ -61,7 +82,7 @@ const onSignInClick = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
 }
 
 .form {

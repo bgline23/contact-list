@@ -64,19 +64,13 @@ const onNoteDelete = note => {
         </v-card-text>
         <v-card-actions class="contact-actions">
           <v-btn
-            dark
-            fab
-            small
             elevation="1"
-            outlined
             icon="mdi-trash-can-outline"
             color="red"
             @click="onContactDelete(1)"
           ></v-btn>
 
-          <v-btn elevation="1" color="primary">
-            <v-icon>mdi-pencil</v-icon>
-          </v-btn>
+          <v-btn elevation="1" color="primary" icon="mdi-pencil"> </v-btn>
         </v-card-actions>
       </v-card>
     </div>
@@ -98,23 +92,13 @@ const onNoteDelete = note => {
           </v-card-text>
 
           <v-card-actions class="contact-actions">
-            <v-btn
-              dark
-              fab
-              small
-              elevation="1"
-              outlined
-              icon="mdi-trash-can-outline"
-              @click="onNoteDelete(noteId)"
-            ></v-btn>
+            <v-btn icon="mdi-trash-can-outline" @click="onNoteDelete(noteId)"></v-btn>
 
-            <v-btn elevation="1" color="primary">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
+            <v-btn elevation="1" color="primary" icon="mdi-pencil"> </v-btn>
           </v-card-actions>
         </v-card>
 
-        <!-- if is grid -->
+        <!-- if it is a grid -->
         <v-card
           v-else
           v-for="c in [1, 2, 3, 4, 5, 6, 7]"
@@ -133,18 +117,13 @@ const onNoteDelete = note => {
 
           <v-card-actions class="contact-actions">
             <v-btn
-              dark
-              fab
-              small
+              color="error"
               elevation="1"
-              outlined
               icon="mdi-trash-can-outline"
               @click="onNoteDelete(noteId)"
             ></v-btn>
 
-            <v-btn elevation="1" color="primary">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
+            <v-btn elevation="1" color="primary" icon="mdi-pencil"> </v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -157,13 +136,11 @@ const onNoteDelete = note => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem 1rem;
-  background-color: yellow;
 }
 .grid3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem 1rem;
-  background-color: yellow;
 }
 
 #note-container:not(.grid2, .grid3) {
@@ -193,7 +170,4 @@ const onNoteDelete = note => {
   justify-content: center;
   margin: 1rem 0 1rem 0;
 }
-/* html div{
-    background-color: red;
-} */
 </style>

@@ -1,34 +1,35 @@
 <script setup>
 import { reactive, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const form = ref(null);
 const snackbar = ref(false);
 const message = ref("");
+const snackbarColor = ref("");
 const router = useRouter();
 
-const onformSubmit = () => {
-  const displayName = form.value.name.value;
-  console.log(form.value.username.value);
-  console.log(form.value.email.value);
-  console.log(form.value.password.value);
-
-  if (displayName.trim() == "zzz") {
-    snackbar.value = true;
-    message.value = "Cant communicate with database server";
-  } else {
-    router.push("/contacts");
+const onformSubmit = async () => {
+  try {
+    const response = await axios.post("http://localhost:8081/user/account", {
+      name: form.value.name.value,
+      username: form.value.username.value,
+      email: form.value.email.value,
+      password: form.value.password.value,
+    });
+  } catch (error) {
+    if (error.response && error.response.data) {
+      snackbarColor.value = "warning";
+      snackbar.value = true;
+      message.value = error.response.data;
+    }
   }
 };
-
-function onSnackbarClose() {
-  console.log("closed");
-}
 </script>
 
 <template>
   <div class="container">
-    <v-snackbar @input="onSnackbarClose" v-model="snackbar" color="error">
+    <v-snackbar v-model="snackbar" :color="snackbarColor">
       {{ message }}
     </v-snackbar>
     <div class="form-wrapper">
@@ -50,7 +51,7 @@ function onSnackbarClose() {
 .container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   align-items: center;
   justify-content: center;
 }
