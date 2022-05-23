@@ -1,7 +1,8 @@
 <script setup>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref, onMounted, } from "vue";
+import { useStore } from 'vuex'
 import { useRouter } from "vue-router";
-import axios from "axios";
+
 
 const form = ref(null);
 const isValidated = ref(false);
@@ -17,24 +18,31 @@ const color = ref("");
 const snackbar = ref(false);
 const message = ref("");
 const router = useRouter();
+const store = useStore();
+
 
 const onSignInClick = async () => {
   try {
+
+
+ 
     form.value.validate();
 
     if (!isValidated.value) return;
 
-    const response = await axios.post("http://localhost:8081/authenticate/login", {
+        const credentials = {
       username: username.value,
       password: password.value,
-    });
+    };
 
-    if (response.data.success) {
+    const dispatchResult = await store.dispatch('signIn',credentials)   
+
+    if (dispatchResult.data.success) {
       router.push("/contacts");
     }
     return;
   } catch (error) {
-    console.log(error);
+
     if (error.response && error.response.status == 401) {
       color.value = "warning";
       snackbar.value = true;

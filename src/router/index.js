@@ -6,15 +6,23 @@ import ContactDetail from "@/views/ContactDetail.vue";
 
 const routes = [
   {
-    path: "/signup",
-    name: "signup",
-    component: SignUp,
+    path: "/",
+    name: "signin",
+    component: SignIn,
   },
   {
     path: "/signin",
     name: "signin",
     component: SignIn,
   },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignUp,
+  },
+ 
+ 
+
   {
     path: "/contacts",
     name: "contacts",
